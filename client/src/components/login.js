@@ -1,14 +1,21 @@
  
 
 import React, { useState } from "react";
- import Axios from "axios";
+import Axios from "axios";
+import Dashboard from "./dashboard";
+
+
+
 
 function Login() {
   
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [user, setUser] = useState(null);
+
     
   const login = () => {
+
     Axios({
       method: "POST",
       data: {
@@ -17,12 +24,18 @@ function Login() {
       },
       withCredentials: true,
       url: "http://localhost:4000/login",
-    }).then((res) => console.log(res));
+    }).then((res) =>{
+        setUser(res.data);
+        console.log(res);
+    }).catch((error) => console.error(error));
+
   };
    
   return (
-    <div className="App">
-       
+    <div >
+        {user ? (
+      <Dashboard username={user.username} />
+    ) : (
 
       <div>
         <h1>Login</h1>
@@ -36,6 +49,7 @@ function Login() {
         />
         <button onClick={login}>Submit</button>
       </div>
+    )}
 
        
     </div>

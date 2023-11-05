@@ -39,7 +39,7 @@ require("./passportConfig")(passport);
 
 //----------------------------------------- END OF MIDDLEWARE---------------------------------------------------
 
-// Routes
+// Routes 
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
@@ -47,8 +47,10 @@ app.post("/login", (req, res, next) => {
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        res.send("Successfully Authenticated");
+        
         console.log(req.user);
+        res.json({ username: user.username });
+
       });
     } 
   })(req, res, next);
