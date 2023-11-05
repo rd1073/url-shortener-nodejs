@@ -87,6 +87,17 @@ app.post("/register", (req, res) => {
     });
 });
 
+app.post("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      res.status(500).send("Logout failed");
+    } else {
+      res.status(200).send("Logout successful");
+    }
+  });
+});
+
+
 //----------------------------------------- END OF ROUTES---------------------------------------------------
 //Start Server
 app.listen(4000, () => {
