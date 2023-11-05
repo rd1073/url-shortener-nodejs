@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Axios from "axios";
+ const Dashboard = ({ username }) => {
+    const [originalURL, setOriginalURL] = useState("");
+    const [shortenedURL, setShortenedURL] = useState("");
 
-const Dashboard = ({ username }) => {
-
-    /*const handleLogout = async () => {
+    const handleShortenURL = async () => {
         try {
-            Axios({
-                method: "POST",
-                url: "http://localhost:4000/logout",
-              }).then((res) => console.log(res));
-          // Send a POST request to your server to log the user out
-           // Redirect the user to the login page (you can use react-router for this)
-          window.location = '/login';
+          // Send a POST request to your server to shorten the URL and save it to the user's record
+          const response = await Axios.post('http://localhost:4000/shorten', {
+            username: username, // Pass the username to the server
+            originalURL: originalURL, // You should define originalURL in your component state.
+          });
+      
+          if (response.status === 200) {
+            // If the URL was successfully shortened, you can do something with the response if needed.
+            // For example, you can show the shortened URL to the user.
+            const shortenedURL = response.data.shortenedURL;
+            setShortenedURL(shortenedURL);
+          } else {
+            console.error('URL shortening failed. Server returned an error.');
+          }
         } catch (error) {
-          console.error('Logout failed:', error);
+          console.error('URL shortening failed:', error);
         }
-      };*/
+      };
+      
 
       const handleLogout = async () => {
         try {
@@ -40,6 +49,17 @@ const Dashboard = ({ username }) => {
   return (
     <div>
       <h1>Welcome, {username}!</h1>
+      <h1>URL Shortener</h1>
+      <div>Hello, {username}!</div>
+
+      <input
+        type="text"
+        placeholder="Enter the original URL"
+        value={originalURL}
+        onChange={(e) => setOriginalURL(e.target.value)}
+      />
+              <button onClick={handleShortenURL}>Shorten URL</button>
+              
       <button onClick={handleLogout}>Logout</button>
       {/* Add content for the dashboard here */}
     </div>

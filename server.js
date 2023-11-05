@@ -5,7 +5,7 @@ const cors = require("cors");
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
 const { User} = require("./user");
-
+const shortid = require("shortid");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
@@ -96,6 +96,98 @@ app.post("/logout", (req, res) => {
     }
   });
 });
+
+
+// Add this route for URL shortening
+/*app.post("/shorten", (req, res) => {
+  
+  const { username, originalURL } = req.body;
+
+  console.log("User:", req.user);
+
+  const user = req.user; // Get the authenticated user from the session
+
+  // Generate a unique shortened URL using shortid
+  const shortenedURL = shortid.generate();
+
+  // Update the user's record with the shortened URL
+  user.urls.push({ originalURL, shortURL: shortenedURL });
+
+  user.save((err) => {
+    if (err) {
+      console.error("URL save failed:", err);
+      res.status(500).send("URL save failed");
+    } else {
+      res.json({ shortenedURL });
+    }
+  });
+});*/
+/*
+app.post("/shorten", async (req, res) => {
+  const { username, originalURL } = req.body;
+
+  // Implement the logic to generate a unique shortened URL (you can use shortid)
+  const shortenedURL = shortid.generate();
+
+
+  // Save the original and shortened URLs to the user's document in the database
+  try {
+    // Find the user by username
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Push the original and shortened URLs to the user's record
+    user.urls.push({ originalURL, shortenedURL });
+    
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ shortenedURL });
+  } catch (err) {
+    console.error("Error saving shortened URL:", err);
+    res.status(500).send("URL shortening and saving failed.");
+  }
+
+});*/
+
+app.post("/shorten", (req, res) => {
+  const { username, originalURL } = req.body;
+
+  // Assuming you have the logic to generate a unique shortened URL here
+  
+// Update the user's record in the database with the shortened URL
+User.findOne({ username: username })
+  .then((user) => {
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Assuming you have the logic to generate a unique shortened URL here
+    const shortenedURL = shortid.generate();
+
+
+    user.urls.push({ originalURL, shortURL: shortenedURL });
+
+    return user.save();
+  })
+  .then((updatedUser) => {
+    // Respond with the shortened URL
+    res.json({ shortenedURL: updatedUser.urls[updatedUser.urls.length - 1].shortURL });
+  })
+  .catch((err) => {
+    console.error("URL shortening and database update failed:", err);
+    res.status(500).send("URL shortening and database update failed.");
+  });
+
+
+  // Update the user's record in the database with the shortened URL
+  
+});
+
+
 
 
 //----------------------------------------- END OF ROUTES---------------------------------------------------
