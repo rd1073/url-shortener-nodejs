@@ -3,6 +3,8 @@ import Axios from "axios";
  const Dashboard = ({ username }) => {
     const [originalURL, setOriginalURL] = useState("");
     const [shortenedURL, setShortenedURL] = useState("");
+    const [urls, setUrls] = useState([]);
+
 
     const handleShortenURL = async () => {
         try {
@@ -17,6 +19,8 @@ import Axios from "axios";
             // For example, you can show the shortened URL to the user.
             const shortenedURL = response.data.shortenedURL;
             setShortenedURL(shortenedURL);
+            // Add the shortened URL to the list of URLs
+           setUrls([...urls, { originalURL, shortenedURL: shortenedURL }]);
           } else {
             console.error('URL shortening failed. Server returned an error.');
           }
@@ -62,6 +66,25 @@ import Axios from "axios";
               
       <button onClick={handleLogout}>Logout</button>
       {/* Add content for the dashboard here */}
+      {/* Display the list of URLs */}
+      {urls.length > 0 && (
+        <div>
+          <h2>Your URLs:</h2>
+          <ul>
+            {urls.map((url, index) => (
+              <li key={index}>
+                Original URL: {url.originalURL}
+                <br />
+                Shortened URL:{" "}
+                <a href={url.originalURL} target="_blank" rel="noopener noreferrer">
+                  {url.shortenedURL}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
     </div>
   );
 };
