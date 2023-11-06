@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import './dashboard.css';
 import Axios from "axios";
  
  const Dashboard = ({ username }) => {
@@ -54,33 +54,34 @@ import Axios from "axios";
        
 
   return (
-    <div>
+    <div className="dashboard-container">
        
          
         
-      <h1>Welcome, {username}!</h1>
-      <h1>URL Shortener</h1>
-      <div>Hello, {username}!</div>
+      <h1 className="dashboard-title">Welcome, {username}!</h1>
+      <h1 className="dashboard-title">URL Shortener</h1>
+    
 
       <input
+      className="dashboard-input"
         type="text"
         placeholder="Enter the original URL"
         value={originalURL}
         onChange={(e) => setOriginalURL(e.target.value)}
       />
-              <button onClick={handleShortenURL}>Shorten URL</button>
+              <button className="dashboard-button" onClick={handleShortenURL}>Shorten URL</button>
               
-      <button onClick={handleLogout}>Logout</button>
+      <button className="dashboard-button" onClick={handleLogout}>Logout</button>
       {/* Add content for the dashboard here */}
       {/* Display the list of URLs */}
       {urls.length > 0 && (
           <div>
-            <h2>All URLs:</h2>
+            <h2 className="dashboard-title">All URLs:</h2>
             <p>
               Original URL: {urls[urls.length - 1].originalURL}
               <br />
               Shortened URL:{" "}
-              <a href={urls[urls.length - 1].originalURL} target="_blank" rel="noopener noreferrer">
+              <a href={urls[urls.length - 1].originalURL} target="_blank" rel="noopener noreferrer"  className="dashboard-link">
                 {urls[urls.length - 1].shortenedURL}
               </a>
             </p>

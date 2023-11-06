@@ -1,0 +1,59 @@
+.dashboard-container {
+    background-image: url('https://exoticbird.org/wp-content/uploads/2020/12/colorful-bird-1.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Set to column to stack elements vertically */
+    background-color: white; /* White background */
+    /* White background */
+    padding: 20px; /* Add some padding for spacing */
+  }
+  
+  .dashboard-title {
+    font-size: 3rem;
+    color: #0074d9; /* Change title color */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #5f0606;
+    border-radius: 5px;
+    outline: none;
+    font-size: 3rem;
+  }
+  
+  .dashboard-button {
+    background-color: #0074d9;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 3rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+  
+  .dashboard-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .dashboard-link {
+    font-size: 3rem;
+    color: #0074d9;
+    text-decoration: none;
+    background-color: white; /* White background */
+
+  }
+  
+  .dashboard-link:hover {
+    text-decoration: underline;
+  }
+  
