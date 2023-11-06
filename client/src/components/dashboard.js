@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './dashboard.css';
 import Axios from "axios";
@@ -8,6 +8,21 @@ import Axios from "axios";
     const [shortenedURL, setShortenedURL] = useState("");
     const [urls, setUrls] = useState([]);
     const [customAlias, setCustomAlias] = useState("");
+    const [loading, setLoading] = useState(true);
+
+    const [showAll, setShowAll] = useState(false);
+
+    useEffect(() => {
+      Axios.get(`http://localhost:4000/urls/${username}`)
+        .then((response) => {
+          setUrls(response.data.urls);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch URLs:", error);
+          setLoading(false);
+        });
+    }, [username]);
 
     const handleCustomURL = async () => {
       try {
@@ -108,6 +123,13 @@ import Axios from "axios";
 
               
       <button className="dashboard-button" onClick={handleLogout}>Logout</button>
+      <button
+  className="dashboard-button"
+  onClick={() => setShowAll(!showAll)}
+>
+  {showAll ? "Hide All" : "Show All"}
+</button>
+
       {/* Add content for the dashboard here */}
       {/* Display the list of URLs */}
       {urls.length > 0 && (
@@ -123,6 +145,30 @@ import Axios from "axios";
             </p>
           </div>
         )}
+
+{showAll && (
+  <div>
+    <h2 className="dashboard-title">All URLs:</h2>
+    <ul>
+      {urls.map((url, index) => (
+        <li key={index}>
+          Original URL: {url.originalURL}
+          <br />
+          Shortened URL:{" "}
+          <a
+            href={url.originalURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="dashboard-link"
+          >
+            {url.shortenedURL}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
 
     </div>
   );

@@ -105,60 +105,7 @@ function ensureAuthenticated(req, res, next) {
   res.status(401).send('Not authenticated'); // User is not authenticated
 }
 
-// Add this route for URL shortening
-/*app.post("/shorten", (req, res) => {
-  
-  const { username, originalURL } = req.body;
-
-  console.log("User:", req.user);
-
-  const user = req.user; // Get the authenticated user from the session
-
-  // Generate a unique shortened URL using shortid
-  const shortenedURL = shortid.generate();
-
-  // Update the user's record with the shortened URL
-  user.urls.push({ originalURL, shortURL: shortenedURL });
-
-  user.save((err) => {
-    if (err) {
-      console.error("URL save failed:", err);
-      res.status(500).send("URL save failed");
-    } else {
-      res.json({ shortenedURL });
-    }
-  });
-});*/
-/*
-app.post("/shorten", async (req, res) => {
-  const { username, originalURL } = req.body;
-
-  // Implement the logic to generate a unique shortened URL (you can use shortid)
-  const shortenedURL = shortid.generate();
-
-
-  // Save the original and shortened URLs to the user's document in the database
-  try {
-    // Find the user by username
-    const user = await User.findOne({ username: username });
-
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
-    // Push the original and shortened URLs to the user's record
-    user.urls.push({ originalURL, shortenedURL });
-    
-    // Save the updated user document
-    await user.save();
-
-    res.status(200).json({ shortenedURL });
-  } catch (err) {
-    console.error("Error saving shortened URL:", err);
-    res.status(500).send("URL shortening and saving failed.");
-  }
-
-});*/
+ 
 
 app.post("/shorten", (req, res) => {
   const { username, originalURL } = req.body;
@@ -223,6 +170,20 @@ app.post("/custom-shorten", (req, res) => {
   // Update the user's record in the database with the shortened URL
 });
 
+app.get("/urls/:username", (req, res) => {
+  const username = req.params.username;
+
+  // Find all URLs associated with the given username in your database
+  URL.find({ username: username })
+    .then((urls) => {
+      // Send the list of URLs as a JSON response
+      res.json({ urls });
+    })
+    .catch((error) => {
+      console.error("Failed to fetch URLs:", error);
+      res.status(500).json({ error: "Failed to fetch URLs" });
+    });
+});
 
 app.get('/dashboard', ensureAuthenticated, (req, res) => {
   // Here, you can access the authenticated user's data using req.user
@@ -240,106 +201,4 @@ app.get('/dashboard', ensureAuthenticated, (req, res) => {
 app.listen(4000, () => {
   console.log("Server Has Started");
 });
-
-/*
-const express = require("express");
-const mongoose = require("mongoose");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const session = require("express-session");
-const bcrypt = require("bcrypt");
-const User = require("./user"); // Create a User model for MongoDB
-const app = express();
-
-// Load environment variables from a .env file
-//require("dotenv").config();
-
  
-// Express middleware setup
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: "abcd",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Passport Local strategy
-passport.use(
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
-      if (err) return done(err);
-      if (!user) return done(null, false, { message: "Incorrect username." });
-      bcrypt.compare(password, user.password, (err, result) => {
-        if (err) return done(err);
-        if (result === true) return done(null, user);
-        return done(null, false, { message: "Incorrect password." });
-      });
-    });
-  })
-);
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
-});
-
-// Routes
-app.get("/", (req, res) => {
-  res.render("login");
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-);
-
-app.get("/register", (req, res) => {
-  res.render("register");
-});
-
-app.post("/register", async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user = new User({
-      username: req.body.username,
-      password: hashedPassword,
-    });
-    await user.save();
-    res.redirect("/login");
-  } catch (error) {
-    console.error(error);
-    res.redirect("/register");
-  }
-});
-
-app.get("/dashboard", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("dashboard", { user: req.user.username });
-  } else {
-    res.redirect("/login");
-  }
-});
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
-
-*/
