@@ -83,7 +83,7 @@ return (
       <button className="login-button" onClick={login}>Submit</button>
       </div>
       <div className="register-link">
-          Not a user? <a href="/register">Register now</a>
+          Not a user? <a href="/signup">Register now</a>
         </div>
     </div>
   )}

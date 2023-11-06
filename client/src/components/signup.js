@@ -1,7 +1,7 @@
  
 
 import React, { useState } from "react";
-
+import './signup.css';
 import Axios from "axios";
 
 function Signup() {
@@ -22,18 +22,22 @@ function Signup() {
    
    
   return (
-    <div className="App">
+    <div className="signup-container">
       <div>
-        <h1>Register</h1>
+        <h1 className="signup-title">Register</h1>
         <input
+        className="signup-input"
           placeholder="username"
           onChange={(e) => setRegisterUsername(e.target.value)}
         />
         <input
+                className="signup-input"
+
           placeholder="password"
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
-        <button onClick={register}>Submit</button>
+        <button         className="signup-button"
+ onClick={register}>Submit</button>
       </div>
 
        
