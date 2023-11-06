@@ -48,6 +48,7 @@ return (
       />
       <input
       className="login-input"
+      type="password"
         placeholder="password"
         onChange={(e) => setLoginPassword(e.target.value)}
       />
