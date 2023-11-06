@@ -97,6 +97,12 @@ app.post("/logout", (req, res) => {
   });
 });
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next(); // User is authenticated, proceed to the next middleware
+  }
+  res.status(401).send('Not authenticated'); // User is not authenticated
+}
 
 // Add this route for URL shortening
 /*app.post("/shorten", (req, res) => {
@@ -185,6 +191,14 @@ User.findOne({ username: username })
 
   // Update the user's record in the database with the shortened URL
   
+});
+
+app.get('/dashboard', ensureAuthenticated, (req, res) => {
+  // Here, you can access the authenticated user's data using req.user
+  const authenticatedUsername = req.user.username;
+
+  // You can render the dashboard template or send data as needed
+  res.render('dashboard', { username: authenticatedUsername });
 });
 
 

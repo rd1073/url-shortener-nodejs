@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import Dashboard from "./dashboard";
-
+ 
 
 
 
@@ -34,7 +34,8 @@ function Login() {
   return (
     <div >
         {user ? (
-      <Dashboard username={user.username} />
+      <><Dashboard username={user.username} /></>
+
     ) : (
 
       <div>
