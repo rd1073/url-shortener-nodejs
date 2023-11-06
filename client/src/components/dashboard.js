@@ -7,6 +7,32 @@ import Axios from "axios";
     const [originalURL, setOriginalURL] = useState("");
     const [shortenedURL, setShortenedURL] = useState("");
     const [urls, setUrls] = useState([]);
+    const [customAlias, setCustomAlias] = useState("");
+
+    const handleCustomURL = async () => {
+      try {
+        // Send a POST request to your server to create a custom shortened URL and save it to the user's record
+        const response = await Axios.post('http://localhost:4000/custom-shorten', {
+          username: username, // Pass the username to the server
+          originalURL: originalURL, // You should define originalURL in your component state.
+          customAlias: customAlias, // The custom alias provided by the user
+        });
+    
+        if (response.status === 200) {
+          // If the custom URL was successfully created, you can do something with the response if needed.
+          // For example, you can show the custom shortened URL to the user.
+          const shortenedURL = response.data.shortenedURL;
+          setShortenedURL(shortenedURL);
+          // Add the shortened URL to the list of URLs
+          setUrls([...urls, { originalURL, shortenedURL: shortenedURL }]);
+        } else {
+          console.error('Custom URL creation failed. Server returned an error.');
+        }
+      } catch (error) {
+        console.error('Custom URL creation failed:', error);
+      }
+    };
+    
 
 
     const handleShortenURL = async () => {
@@ -70,6 +96,16 @@ import Axios from "axios";
         onChange={(e) => setOriginalURL(e.target.value)}
       />
               <button className="dashboard-button" onClick={handleShortenURL}>Shorten URL</button>
+      
+              <input
+  className="dashboard-input"
+  type="text"
+  placeholder="Custom Alias (optional)"
+  value={customAlias}
+  onChange={(e) => setCustomAlias(e.target.value)}
+/>
+<button className="dashboard-button" onClick={handleCustomURL}>Create Custom URL</button>
+
               
       <button className="dashboard-button" onClick={handleLogout}>Logout</button>
       {/* Add content for the dashboard here */}

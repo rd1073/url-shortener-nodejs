@@ -189,10 +189,40 @@ User.findOne({ username: username })
     res.status(500).send("URL shortening and database update failed.");
   });
 
+  
 
   // Update the user's record in the database with the shortened URL
   
 });
+
+
+app.post("/custom-shorten", (req, res) => {
+  const { username, originalURL, customAlias } = req.body;
+  User.findOne({ username: username })
+  .then((user) => {
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const shortenedURL = customAlias;
+
+
+    user.urls.push({ originalURL, shortURL: shortenedURL });
+
+    return user.save();
+  })
+  .then((updatedUser) => {
+    // Respond with the shortened URL
+    res.json({ shortenedURL: updatedUser.urls[updatedUser.urls.length - 1].shortURL });
+  })
+  .catch((err) => {
+    console.error("URL shortening and database update failed:", err);
+    res.status(500).send("URL shortening and database update failed.");
+  });
+
+
+  // Update the user's record in the database with the shortened URL
+});
+
 
 app.get('/dashboard', ensureAuthenticated, (req, res) => {
   // Here, you can access the authenticated user's data using req.user
