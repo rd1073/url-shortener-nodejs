@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 import './signup.css';
 import Axios from "axios";
-
+import Dashboard from "./dashboard";
 function Signup() {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-   
+ 
   const register = () => {
     Axios({
       method: "POST",
@@ -17,12 +17,20 @@ function Signup() {
       },
       withCredentials: true,
       url: "http://localhost:4000/register",
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      if (res.data.registrationSuccess) {
+        // Redirect to the login component
+        console.log("Redirecting to login...");
+
+        window.location = '/login';
+      }
+    }) 
   };
    
    
   return (
     <div className="signup-container">
+        
       <div>
         <h1 className="signup-title">Register</h1>
         <input
@@ -40,9 +48,11 @@ function Signup() {
  onClick={register}>Submit</button>
       </div>
 
-       
+      <div className="login-link">
+           <a href="/login">Login!!</a>
+        </div>
 
-       
+  
     </div>
   );
 }

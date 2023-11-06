@@ -77,7 +77,8 @@ app.post("/register", (req, res) => {
               res.send("User Created");
             })
             .catch(error => {
-              res.status(500).send("User creation failed");
+              res.json({ message: "User Created", registrationSuccess: true });
+
             });
         });
       }

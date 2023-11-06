@@ -30,36 +30,7 @@ function Login() {
     }).catch((error) => console.error(error));
 
   };
-   /*
-  return (
-    <div className="login-container" >
-        {user ? (
-      <><Dashboard username={user.username} /></>
-
-    ) : (
-
-      <><div>
-            <h1>Login</h1>
-            <form className="login-form">
-            <input
-              placeholder="username"
-              onChange={(e) => setLoginUsername(e.target.value)} />
-            <input
-              placeholder="password"
-              onChange={(e) => setLoginPassword(e.target.value)} />
-            <button className="login-button" onClick={login}>Submit</button>
-            </form>
-            
-            <div className="register-link">
-              Not a user? <a href="/register">Register now</a>
-            </div></>
-      </div>
-    )}
-
-       
-    </div>
-  );
-}*/
+    
 return (
   <div className="login-container">
       {user ? (
