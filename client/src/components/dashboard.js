@@ -68,22 +68,18 @@ import Axios from "axios";
       {/* Add content for the dashboard here */}
       {/* Display the list of URLs */}
       {urls.length > 0 && (
-        <div>
-          <h2>Your URLs:</h2>
-          <ul>
-            {urls.map((url, index) => (
-              <li key={index}>
-                Original URL: {url.originalURL}
-                <br />
-                Shortened URL:{" "}
-                <a href={url.originalURL} target="_blank" rel="noopener noreferrer">
-                  {url.shortenedURL}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+          <div>
+            <h2>All URLs:</h2>
+            <p>
+              Original URL: {urls[urls.length - 1].originalURL}
+              <br />
+              Shortened URL:{" "}
+              <a href={urls[urls.length - 1].originalURL} target="_blank" rel="noopener noreferrer">
+                {urls[urls.length - 1].shortenedURL}
+              </a>
+            </p>
+          </div>
+        )}
 
     </div>
   );
