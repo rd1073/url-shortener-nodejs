@@ -173,11 +173,13 @@ app.post("/custom-shorten", (req, res) => {
 app.get("/urls/:username", (req, res) => {
   const username = req.params.username;
 
-  // Find all URLs associated with the given username in your database
-  URL.find({ username: username })
+  User.find({ username: username })
     .then((urls) => {
       // Send the list of URLs as a JSON response
-      res.json({ urls });
+      res.json({ urls: username.urls });
+
+      console.log({ urls });
+
     })
     .catch((error) => {
       console.error("Failed to fetch URLs:", error);

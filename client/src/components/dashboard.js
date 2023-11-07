@@ -8,11 +8,11 @@ import Axios from "axios";
     const [shortenedURL, setShortenedURL] = useState("");
     const [urls, setUrls] = useState([]);
     const [customAlias, setCustomAlias] = useState("");
-    const [loading, setLoading] = useState(true);
-
+    const [isLoading, setLoading] = useState(false);
     const [showAll, setShowAll] = useState(false);
 
-    useEffect(() => {
+    const handleShowAll = () => {
+      setLoading(true);
       Axios.get(`http://localhost:4000/urls/${username}`)
         .then((response) => {
           setUrls(response.data.urls);
@@ -22,7 +22,7 @@ import Axios from "axios";
           console.error("Failed to fetch URLs:", error);
           setLoading(false);
         });
-    }, [username]);
+    };
 
     const handleCustomURL = async () => {
       try {
@@ -121,14 +121,10 @@ import Axios from "axios";
 />
 <button className="dashboard-button" onClick={handleCustomURL}>Create Custom URL</button>
 
+
               
       <button className="dashboard-button" onClick={handleLogout}>Logout</button>
-      <button
-  className="dashboard-button"
-  onClick={() => setShowAll(!showAll)}
->
-  {showAll ? "Hide All" : "Show All"}
-</button>
+      
 
       {/* Add content for the dashboard here */}
       {/* Display the list of URLs */}
@@ -144,31 +140,16 @@ import Axios from "axios";
               </a>
             </p>
           </div>
-        )}
+        )}
 
-{showAll && (
-  <div>
-    <h2 className="dashboard-title">All URLs:</h2>
-    <ul>
-      {urls.map((url, index) => (
-        <li key={index}>
-          Original URL: {url.originalURL}
-          <br />
-          Shortened URL:{" "}
-          <a
-            href={url.originalURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="dashboard-link"
-          >
-            {url.shortenedURL}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
 
+
+ 
+ 
+
+
+
+ 
 
     </div>
   );
